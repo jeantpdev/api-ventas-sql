@@ -119,7 +119,7 @@ class Modelo_Ventas():
 
             cursor = connection.cursor()
 
-            cursor.execute(f"select * from {os.getenv('TABLE')} v where v.fecha_ingreso_venta like '18/03/2024'")
+            cursor.execute(f"select * from {os.getenv('TABLE')} v where v.fecha_ingreso_venta like '22/02/2024'")
 
             column_names = [desc[0] for desc in cursor.description]
 

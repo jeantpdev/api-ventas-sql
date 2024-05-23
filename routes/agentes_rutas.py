@@ -10,3 +10,8 @@ agentes = Blueprint('agentes', __name__)
 @cross_origin()
 def get_top_agentes_mes():
    return Con_Agentes.get_top_agentes_mes()
+
+@agentes.route('/datos-personales/<cedula>', methods=['GET'])
+@cross_origin()
+def get_datos_personales(cedula):
+   return Con_Agentes.get_datos_personales(cedula)
