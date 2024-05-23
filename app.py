@@ -1,19 +1,27 @@
 from flask import Flask
 from flask_cors import CORS
+
+from routes.agentes_rutas import *
+from routes.lideres_rutas import *
+from routes.ventas_rutas import *
+
 #from flask_jwt_extended import JWTManager, create_access_token, jwt_required
 from dotenv import load_dotenv
 
 load_dotenv()
-from routes.ventas_rutas import *
+
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
 # GENERALES
-app.register_blueprint(todo)
+app.register_blueprint(ventas)
+app.register_blueprint(lideres)
+app.register_blueprint(agentes)
 
 #Pagina de error
 def pagina_no_encontrada(error):
+    print(error)
     return "<h1>La pagina a la que intentas acceder no existe...</h1>"
 
 if __name__=="__main__":
