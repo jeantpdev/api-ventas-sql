@@ -30,3 +30,8 @@ def get_ventas_ultimo_trimestre():
 @cross_origin()
 def get_ventas_dia_actual():
    return Con_Ventas.get_ventas_dia_actual()
+
+@ventas.route('/crear-venta/', methods=['POST'])
+@cross_origin()
+def post_venta():
+   return Con_Ventas.post_venta()

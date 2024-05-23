@@ -1,0 +1,39 @@
+                # Insertar datos en la tabla datos_cliente y recuperar ID generado
+                cursor.execute(
+                    """
+                    INSERT INTO datos_cliente (nombre, dni, telefono, telefono_fijo, correo, direccion, fecha_nacimiento, cups_luz, cups_gas, iban, numero_contrato, potencia, peaje_gas, mantenimiento, tipo_mantenimiento, compania)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    RETURNING id_cliente
+                    """,
+                    cliente_data
+                )
+                id_cliente = cursor.fetchone()[0]
+
+                # Insertar datos en la tabla Calidad y recuperar ID generado
+                cursor.execute(
+                    """
+                    INSERT INTO Calidad (llamada_realizada, calidad_enviada, observaciones, audios_cargados, verificacion)
+                    VALUES (%s, %s, %s, %s, %s)
+                    RETURNING id_calidad
+                    """,
+                    calidad_data
+                )
+                id_calidad = cursor.fetchone()[0]
+
+                # Confirmar las transacciones anteriores antes de insertar en Venta
+                connection.commit()
+
+                # Datos de ejemplo para la tabla Venta
+                venta_data = (id_cliente, id_usuario, id_calidad, '2023-05-01 10:00:00', '123456789', 'Venta de producto A')
+
+                # Insertar datos en la tabla Venta
+                cursor.execute(
+                    """
+                    INSERT INTO Venta (fk_id_cliente, fk_id_usuario, fk_id_calidad, fecha_ingreso, cedula, observaciones_venta)
+                    VALUES (%s, %s, %s, %s, %s, %s)
+                    """,
+                    venta_data
+                )
+
+                # Confirmar todas las transacciones
+                connection.commit()

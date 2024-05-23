@@ -23,3 +23,7 @@ class Ventas_Controlador():
     def get_ventas_dia_actual(self):
         query = Mod_Ventas.ventas_dia_actual()
         return query
+
+    def post_venta(self):
+        query = Mod_Ventas.crear_venta()
+        return query
