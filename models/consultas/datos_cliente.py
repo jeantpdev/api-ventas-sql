@@ -12,7 +12,22 @@ class Datos_Cliente:
 
             cursor.execute(
                 """
-                INSERT INTO datos_cliente (nombre, dni, telefono, telefono_fijo, correo, direccion, fecha_nacimiento, cups_luz, cups_gas, iban, numero_contrato, potencia, peaje_gas, mantenimiento, tipo_mantenimiento, compania)
+                INSERT INTO datos_cliente (nombre, 
+                dni, 
+                telefono, 
+                telefono_fijo, 
+                correo, 
+                direccion, 
+                fecha_nacimiento, 
+                cups_luz, 
+                cups_gas, 
+                iban, 
+                numero_contrato, 
+                potencia, 
+                peaje_gas, 
+                mantenimiento, 
+                tipo_mantenimiento, 
+                compania)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                 RETURNING id_cliente
                 """,

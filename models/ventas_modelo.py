@@ -32,33 +32,31 @@ class Modelo_Ventas():
                             request.json['tipo_mantenimiento'], 
                             request.json['compania'])
             
-            datos_calidad = (request.json['llamada_realizada'], 
-                            request.json['calidad_enviada'], 
+            datos_calidad = (bool(request.json['llamada_realizada']), 
+                            bool(request.json['calidad_enviada']), 
                             request.json['observaciones_calidad'], 
-                            request.json['audios_cargados'], 
-                            request.json['verificacion'])
+                            bool(request.json['audios_cargados']), 
+                            bool(request.json['verificacion']))
 
             try:
                 
                 # Consultar datos del agente que realizo la venta mediante su cedula 
-                cedula = Usuario.consultar_usuario(cedula, "cedula")
+                id_usuario = Usuario.consultar_usuario(cedula, "id_usuario")
                 # ID generado al crear el cliente
                 id_cliente = Datos_Cliente.insertar_data_cliente(datos_cliente)
                 # ID generado al crear la calidad
                 id_calidad = Calidad.insertar_calidad(datos_calidad)
 
-                print("La cedula del agente es:")
-                print(cedula)
                 print("El ID del cliente que se genero es:")
                 print(id_cliente)
                 print("El ID de la calidad que se genero es:")
                 print(id_calidad)
 
-                print("La cedula es")
-                print(cedula[0])
+                print("Id agente es")
+                print(id_usuario)
 
                 datos_venta = (id_cliente, 
-                                cedula[0], 
+                                id_usuario, 
                                 id_calidad, 
                                 request.json['fecha_ingreso'], 
                                 request.json['observaciones_venta'],
