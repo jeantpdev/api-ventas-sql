@@ -7,11 +7,12 @@ class Modelo_Agentes():
     # Muestra todas las ventas
     def datos_personales(self, cedula):
         try:
+            print(cedula)
             connection = BD.conectar_postgres()
 
             cursor = connection.cursor()
 
-            cursor.execute(f"SELECT * FROM public.agentes WHERE cedula = '{cedula}'")
+            cursor.execute(f"SELECT * FROM {os.getenv('TABLE_USERS')} WHERE cedula = '{cedula}'")
 
             column_names = [desc[0] for desc in cursor.description]
 
@@ -20,8 +21,6 @@ class Modelo_Agentes():
             datos_agente = []
             for agente in filas_datos_agente:
                 datos_agente.append(dict(zip(column_names, agente)))
-
-            print(datos_agente)
 
             return jsonify({"datos_agente": datos_agente}), 200
         except Exception as e:

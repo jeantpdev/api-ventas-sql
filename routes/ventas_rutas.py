@@ -35,3 +35,8 @@ def get_ventas_dia_actual():
 @cross_origin()
 def post_venta():
    return Con_Ventas.post_venta()
+
+@ventas.route('/venta-agente/<cedula>', methods=['GET'])
+@cross_origin()
+def get_venta_agente(cedula):
+   return Con_Ventas.get_venta_agente(cedula)

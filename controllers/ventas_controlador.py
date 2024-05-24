@@ -27,3 +27,7 @@ class Ventas_Controlador():
     def post_venta(self):
         query = Mod_Ventas.crear_venta()
         return query
+
+    def get_venta_agente(self, cedula):
+        query = Mod_Ventas.ventas_agente(cedula)
+        return query

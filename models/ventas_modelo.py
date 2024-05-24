@@ -39,11 +39,6 @@ class Modelo_Ventas():
                             request.json['verificacion'])
 
             try:
-                #usuario_data = ('usuario1', 'password1', 'Nombre1', '123456789', 'email1@example.com', 'Lider1', 'Admin')
-                # Datos de ejemplo para una sola entrada
-                #usuario_data = ('usuario1', 'password1', 'Nombre1', '123456789', 'email1@example.com', 'Lider1', 'Admin')
-                #cliente_data = ('Cliente1', 'DNI123456', '555-1234', '555-5678', 'cliente1@example.com', 'Direccion1', '1980-01-01', 'CUPS123', 'CUPS456', 'IBAN123456789', 'Contrato1', 'Potencia1', 'Peaje1', 'Mantenimiento1', 'Tipo1', 'Compania1')
-                #calidad_data = (True, True, 'Observacion1', True, True)
                 
                 # Consultar datos del agente que realizo la venta mediante su cedula 
                 cedula = Usuario.consultar_usuario(cedula, "cedula")
@@ -62,7 +57,6 @@ class Modelo_Ventas():
                 print("La cedula es")
                 print(cedula[0])
 
-                
                 datos_venta = (id_cliente, 
                                 cedula[0], 
                                 id_calidad, 
@@ -76,10 +70,8 @@ class Modelo_Ventas():
                 print(id_venta)
 
             except Exception as e:
-                # Si ocurre un error, revertir la transacción
-                # connection.rollback()
+                connection.rollback()
                 print("Error: ", e)
-
 
             return jsonify({"ventas": "results"}), 200
         except Exception as e:
@@ -218,6 +210,59 @@ class Modelo_Ventas():
                 ventas_dia_actual.append(dict(zip(column_names, venta)))
 
             return jsonify({"ventas_dia_actual": ventas_dia_actual}), 200
+        except Exception as e:
+            print("Ocurrió un error:", e)
+            return jsonify({"mensaje": "Ocurrió un error al procesar la solicitud."}), 500
+    
+        finally:
+            if connection:
+                cursor.close()
+                connection.close()
+    
+    def ventas_agente(self, cedula):
+        try:
+            connection = BD.conectar_postgres()
+
+            cursor = connection.cursor()
+
+            id_usuario = Usuario.consultar_usuario(cedula, "id_usuario")
+
+            cursor.execute(f"""
+                SELECT 
+                    Venta.id_venta,
+                    datos_cliente.nombre AS nombre_cliente,
+                    datos_cliente.dni,
+                    datos_cliente.telefono,
+                    datos_cliente.correo AS correo,
+                    Usuarios.nombre AS agente,
+                    Calidad.llamada_realizada,
+                    Calidad.calidad_enviada,
+                    Calidad.verificacion AS verificacion_calidad,
+                    Calidad.observaciones AS observaciones_calidad,
+                    Venta.fecha_ingreso,
+                    Venta.observaciones_venta,
+                    Venta.estado
+                FROM 
+                    Venta
+                JOIN 
+                    datos_cliente ON Venta.fk_id_cliente = datos_cliente.id_cliente
+                JOIN 
+                    Usuarios ON Venta.fk_id_usuario = Usuarios.id_usuario
+                JOIN 
+                    Calidad ON Venta.fk_id_calidad = Calidad.id_calidad
+                WHERE 
+                    Venta.fk_id_usuario = {id_usuario};
+                           """)
+
+            column_names = [desc[0] for desc in cursor.description]
+
+            fila_ventas = cursor.fetchall()
+
+            ventas_agente = []
+            for venta in fila_ventas:
+                ventas_agente.append(dict(zip(column_names, venta)))
+
+            return jsonify({"ventas_agente": ventas_agente}), 200
         except Exception as e:
             print("Ocurrió un error:", e)
             return jsonify({"mensaje": "Ocurrió un error al procesar la solicitud."}), 500

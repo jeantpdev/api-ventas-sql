@@ -15,7 +15,7 @@ class Iniciar_Sesion_Modelo():
 
             cursor = connection.cursor()
 
-            cursor.execute(f"SELECT rol, cedula FROM public.agentes WHERE usuario = '{usuario}' AND contrasena = '{contrasena}'")
+            cursor.execute(f"SELECT rol, cedula FROM public.usuarios WHERE usuario = '{usuario}' AND contrasena = '{contrasena}'")
 
             column_names = [desc[0] for desc in cursor.description]
 
