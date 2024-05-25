@@ -16,7 +16,6 @@ class Usuario:
             
             if valor_retornar:
                 return datos_usuario[0][valor_retornar]
-
             return datos_usuario
         
         except Exception as e:

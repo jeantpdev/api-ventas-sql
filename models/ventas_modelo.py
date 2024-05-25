@@ -42,18 +42,13 @@ class Modelo_Ventas():
                 
                 # Consultar datos del agente que realizo la venta mediante su cedula 
                 id_usuario = Usuario.consultar_usuario(cedula, "id_usuario")
-                # ID generado al crear el cliente
+                print("ID de usuario obtenido", id_usuario)
+
                 id_cliente = Datos_Cliente.insertar_data_cliente(datos_cliente)
-                # ID generado al crear la calidad
+                print("ID del cliente generado", id_cliente)
+
                 id_calidad = Calidad.insertar_calidad(datos_calidad)
-
-                print("El ID del cliente que se genero es:")
-                print(id_cliente)
-                print("El ID de la calidad que se genero es:")
-                print(id_calidad)
-
-                print("Id agente es")
-                print(id_usuario)
+                print("ID del registro calidad generado", id_calidad)
 
                 datos_venta = (id_cliente, 
                                 id_usuario, 
@@ -64,14 +59,13 @@ class Modelo_Ventas():
                 
                 id_venta = Venta.insertar_venta(datos_venta)
 
-                print("el id de la venta es:")
-                print(id_venta)
+                print("ID de venta generado:", id_venta)
 
             except Exception as e:
                 connection.rollback()
                 print("Error: ", e)
 
-            return jsonify({"ventas": "results"}), 200
+            return jsonify({"status": "OK"}), 200
         except Exception as e:
             print("Ocurrió un error:", e)
             return jsonify({"mensaje": "Ocurrió un error al procesar la solicitud."}), 500
