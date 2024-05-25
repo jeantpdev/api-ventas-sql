@@ -10,3 +10,8 @@ usuarios = Blueprint('usuarios', __name__)
 @cross_origin()
 def get_traer_usuarios():
    return Con_Usuario.get_traer_usuarios()
+
+@usuarios.route('/crear-usuario/', methods=['POST'])
+@cross_origin()
+def post_crear_usuario():
+   return Con_Usuario.post_crear_usuario()

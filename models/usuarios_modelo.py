@@ -1,5 +1,6 @@
-from flask import jsonify
+from flask import jsonify, request
 from models.database.conexion_postgresql import *
+from models.consultas.usuario import *
 import os 
 class Modelo_Usuarios():
 
@@ -28,3 +29,24 @@ class Modelo_Usuarios():
             if connection:
                 cursor.close()
                 connection.close()
+
+    def crear_usuario(self):
+        try:
+            datos_cliente = (request.json['usuario'], 
+                            request.json['contrasena'], 
+                            request.json['nombre'], 
+                            request.json['cedula'], 
+                            request.json['correo'], 
+                            request.json['lider_equipo'], 
+                            request.json['rol'])
+            print(datos_cliente)
+            
+            id_usuario = Usuario.crear_usuario(datos_cliente)
+            
+            print(id_usuario)
+
+            return jsonify({"status": "OK"}), 200
+        except Exception as e:
+            print("Ocurrió un error: en usuarios_modelos", e)
+            return jsonify({"mensaje": "Ocurrió un error al procesar la solicitud."}), 500
+
